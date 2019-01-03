@@ -1,0 +1,18 @@
+<% content_for :page_actions do %>
+  <% if frontend_available? %>
+    <%= button_link_to Spree.t(:preview_product), product_url(@course), { class: "btn-default", icon: 'eye-open', id: 'admin_preview_product', target: :_blank } %>
+  <% end %>
+  <% if can?(:create, Spree::Course) %>
+    <%= button_link_to Spree.t(:new_course), new_object_url, { class: "btn-success", icon: 'add', id: 'admin_new_product' } %>
+  <% end %>
+<% end %>
+
+<%= render partial: 'spree/admin/shared/course_tabs', locals: {current: :details} %>
+<%= render partial: 'spree/admin/shared/error_messages', locals: { target: @course } %>
+
+<%= form_for [:admin, @course], method: :put, html: { multipart: true } do |f| %>
+  <fieldset>
+    <%= render partial: 'form', locals: { f: f } %>
+    <%= render partial: 'spree/admin/shared/edit_resource_links' %>
+  </fieldset>
+<% end %>

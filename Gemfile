@@ -70,3 +70,6 @@ gem 'vinsol_spree_themes', github: 'knottokh/spree_theme', branch: 'master'
 gem 'sprockets-helpers'
 #bundle exec rails g vinsol_spree_themes:install
 #gem 'activestorage'
+
+gem 'spree_social', github: 'spree-contrib/spree_social'
+#bundle exec rails g spree_social:install

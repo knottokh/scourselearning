@@ -20,4 +20,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  spree:
+    courses: "Course"
+    new_course: "New Course"
+    no_courses_found: "No Courses Found"
+    back_to_courses_list: "Back To Courses List"
+    course_name: "Name"
+    course_description: "Description"
+    preview_course: "Preview Course"

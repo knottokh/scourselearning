@@ -8,14 +8,25 @@ Rails.application.routes.draw do
   # We ask that you don't use the :as option here, as Spree relies on it being
   # the default of "spree".
   mount Spree::Core::Engine, at: '/'
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
+  
+  Spree::Core::Engine.add_routes do
+    namespace :admin do
+      resources :courses do
+        resources :product_properties do
+          collection do
+            post :update_positions
+          end
+        end
+        resources :courseimages do
+          collection do
+            post :update_positions
+          end
+        end
+      end
+    end
+  end
+    # Example of regular route:
+    #   get 'products/:id' => 'catalog#view'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

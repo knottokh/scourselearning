@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_13_175850) do
+ActiveRecord::Schema.define(version: 2019_01_03_154754) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -31,6 +31,13 @@ ActiveRecord::Schema.define(version: 2018_12_13_175850) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -116,6 +123,16 @@ ActiveRecord::Schema.define(version: 2018_12_13_175850) do
     t.index ["viewable_type", "type"], name: "index_assets_on_viewable_type_and_type"
   end
 
+  create_table "spree_authentication_methods", force: :cascade do |t|
+    t.string "environment"
+    t.string "provider"
+    t.string "api_key"
+    t.string "api_secret"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "spree_calculators", force: :cascade do |t|
     t.string "type"
     t.string "calculable_type"
@@ -140,6 +157,20 @@ ActiveRecord::Schema.define(version: 2018_12_13_175850) do
     t.boolean "zipcode_required", default: true
     t.index ["iso_name"], name: "index_spree_countries_on_iso_name", unique: true
     t.index ["name"], name: "index_spree_countries_on_name", unique: true
+  end
+
+  create_table "spree_courses", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "available_on"
+    t.datetime "deleted_at"
+    t.string "slug"
+    t.index ["available_on"], name: "index_spree_courses_on_available_on"
+    t.index ["deleted_at"], name: "index_spree_courses_on_deleted_at"
+    t.index ["name"], name: "index_spree_courses_on_name"
+    t.index ["slug"], name: "index_spree_courses_on_slug", unique: true
   end
 
   create_table "spree_credit_cards", force: :cascade do |t|
@@ -437,10 +468,12 @@ ActiveRecord::Schema.define(version: 2018_12_13_175850) do
     t.boolean "promotionable", default: true
     t.string "meta_title"
     t.datetime "discontinue_on"
+    t.integer "parent_id"
     t.index ["available_on"], name: "index_spree_products_on_available_on"
     t.index ["deleted_at"], name: "index_spree_products_on_deleted_at"
     t.index ["discontinue_on"], name: "index_spree_products_on_discontinue_on"
     t.index ["name"], name: "index_spree_products_on_name"
+    t.index ["parent_id"], name: "index_spree_products_on_parent_id"
     t.index ["shipping_category_id"], name: "index_spree_products_on_shipping_category_id"
     t.index ["slug"], name: "index_spree_products_on_slug", unique: true
     t.index ["tax_category_id"], name: "index_spree_products_on_tax_category_id"
@@ -1022,6 +1055,16 @@ ActiveRecord::Schema.define(version: 2018_12_13_175850) do
     t.index ["active"], name: "index_spree_trackers_on_active"
   end
 
+  create_table "spree_user_authentications", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "provider"
+    t.string "uid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uid", "provider"], name: "index_spree_user_authentications_on_uid_and_provider", unique: true
+    t.index ["user_id"], name: "index_spree_user_authentications_on_user_id"
+  end
+
   create_table "spree_users", force: :cascade do |t|
     t.string "encrypted_password", limit: 128
     t.string "password_salt", limit: 128
@@ -1076,6 +1119,8 @@ ActiveRecord::Schema.define(version: 2018_12_13_175850) do
     t.datetime "updated_at", null: false
     t.datetime "discontinue_on"
     t.datetime "created_at", null: false
+    t.integer "course_id"
+    t.index ["course_id"], name: "index_spree_variants_on_course_id"
     t.index ["deleted_at"], name: "index_spree_variants_on_deleted_at"
     t.index ["discontinue_on"], name: "index_spree_variants_on_discontinue_on"
     t.index ["is_master"], name: "index_spree_variants_on_is_master"
